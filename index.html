@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AgentComply AI | AI Agent Audit Evidence Layer</title>
+    <meta
+      name="description"
+      content="AgentComply AI is an audit evidence layer for autonomous AI-agent actions in regulated workflows."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="AgentComply AI home">
+        <span class="brand-mark">AC</span>
+        <span>AgentComply AI</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#workflow">Workflow</a>
+        <a href="#demo">Demo</a>
+        <a href="#pilot">Pilot</a>
+        <a href="#design-partner">Design partner</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section-pad">
+        <div class="hero-content">
+          <p class="eyebrow">Pre-validation pilot concept</p>
+          <h1>Govern what your AI agents do before regulators ask.</h1>
+          <p class="hero-copy">
+            AgentComply AI creates audit-ready evidence for AI-agent actions:
+            what the agent did, what data it touched, which policy applied, and
+            whether the action should be allowed, flagged, escalated, or blocked.
+          </p>
+          <div class="cta-row">
+            <a class="button primary" href="#design-partner">Request Design Partner Access</a>
+            <a class="button secondary" href="#audit-report">View Sample Audit Report</a>
+          </div>
+          <p class="trust-note">
+            Pre-validation pilot concept. Demo uses synthetic agent logs. No live customer data.
+          </p>
+          <div class="proof-grid" aria-label="Proof badges">
+            <span>Synthetic JSONL audit logs</span>
+            <span>Policy decision engine</span>
+            <span>Audit report preview</span>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="Audit evidence product preview">
+          <div class="panel-topbar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="status-card decision-escalate">
+            <p>Decision</p>
+            <strong>escalate</strong>
+            <small>PII review required before customer communication.</small>
+          </div>
+          <div class="event-stack">
+            <div>
+              <span>agent_id</span>
+              <strong>support-agent-042</strong>
+            </div>
+            <div>
+              <span>policy_matched</span>
+              <strong>PII_CUSTOMER_COMMUNICATION_REVIEW</strong>
+            </div>
+            <div>
+              <span>evidence_status</span>
+              <strong>audit-ready synthetic event</strong>
+            </div>
+          </div>
+          <pre class="mini-code" aria-label="Sample evidence JSON"><code>{
+  "action_type": "customer_email",
+  "decision": "escalate",
+  "risk_score": 67
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Problem</p>
+          <h2>AI agents are taking actions faster than teams can prove control.</h2>
+        </div>
+        <div class="card-grid three">
+          <article class="info-card">
+            <h3>Agents act autonomously</h3>
+            <p>Modern agents can access systems, update records, send messages, and trigger workflows with limited human review.</p>
+          </article>
+          <article class="info-card">
+            <h3>Audit trails are incomplete</h3>
+            <p>Tool logs rarely explain policy context, data sensitivity, approval state, and the reason a decision was made.</p>
+          </article>
+          <article class="info-card">
+            <h3>Accountability already exists</h3>
+            <p>Teams still need to explain who approved an action, what evidence exists, and how exceptions were handled.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-pad section-muted">
+        <div class="section-heading">
+          <p class="eyebrow">Buyer objections</p>
+          <h2>Built for the questions buyers ask before a pilot.</h2>
+        </div>
+        <div class="card-grid four">
+          <article class="info-card">
+            <h3>Can compliance trust the evidence?</h3>
+            <p>The pilot focuses on normalized synthetic logs, transparent scoring, and repeatable report structure so reviewers can inspect every field.</p>
+          </article>
+          <article class="info-card">
+            <h3>Will engineering hate the integration?</h3>
+            <p>v0 starts from JSONL-style agent events and a narrow integration point before expanding into broader workflow coverage.</p>
+          </article>
+          <article class="info-card">
+            <h3>Is this claiming legal compliance?</h3>
+            <p>No. AgentComply AI organizes evidence and risk decisions. It does not provide legal advice, certification, or regulatory approval.</p>
+          </article>
+          <article class="info-card">
+            <h3>Is this too broad?</h3>
+            <p>The validation path is intentionally narrow: one regulated workflow, one policy library, one schema, and one audit-ready report.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="workflow" class="section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Product workflow</p>
+          <h2>From agent activity to audit-ready evidence.</h2>
+        </div>
+        <ol class="workflow" aria-label="Product workflow">
+          <li>Ingest</li>
+          <li>Normalize</li>
+          <li>Evaluate</li>
+          <li>Decide</li>
+          <li>Report</li>
+        </ol>
+        <p class="workflow-note">
+          v0 starts with after-the-fact audit visibility. Real-time blocking can
+          come later once the evidence layer is trusted.
+        </p>
+      </section>
+
+      <section id="demo" class="section-pad section-muted">
+        <div class="section-heading">
+          <p class="eyebrow">Interactive demo</p>
+          <h2>Agent Compliance Risk Engine</h2>
+          <p>
+            Weighted scoring estimates risk severity. Hard policy rules override
+            the score when a regulated action requires a deterministic decision.
+          </p>
+        </div>
+        <div class="demo-layout">
+          <div class="scenario-list" aria-label="Synthetic scenarios">
+            <button class="scenario-button active" type="button" data-scenario="0">A. Low-risk CRM lookup</button>
+            <button class="scenario-button" type="button" data-scenario="1">B. Customer email with PII and no human approval</button>
+            <button class="scenario-button" type="button" data-scenario="2">C. Refund/payment action above threshold</button>
+            <button class="scenario-button" type="button" data-scenario="3">D. Missing audit fields</button>
+          </div>
+          <article class="demo-panel">
+            <div class="demo-header">
+              <div>
+                <p class="eyebrow">Synthetic event</p>
+                <h3 id="scenario-title">Scenario title</h3>
+              </div>
+              <span id="decision-pill" class="decision-pill">allow</span>
+            </div>
+            <dl id="scenario-fields" class="field-grid"></dl>
+            <div class="score-row">
+              <div class="decision-metrics">
+                <div>
+                  <span>Weighted score</span>
+                  <strong id="risk-score">0</strong>
+                </div>
+                <div>
+                  <span>Score-based decision</span>
+                  <strong id="score-based-decision">allow</strong>
+                </div>
+                <div>
+                  <span>Policy rule applied</span>
+                  <strong id="policy-rule">No override</strong>
+                </div>
+                <div>
+                  <span>Final decision</span>
+                  <strong id="final-decision">allow</strong>
+                </div>
+              </div>
+              <p id="decision-reason">Reason text.</p>
+            </div>
+            <div class="code-block">
+              <div class="code-header">
+                <span>JSONL audit record</span>
+                <button class="copy-button" type="button" data-copy-target="jsonl-output">Copy</button>
+              </div>
+              <pre><code id="jsonl-output"></code></pre>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <div class="split-layout">
+          <div class="section-heading inline-heading">
+            <p class="eyebrow">Standard audit schema</p>
+            <h2>One event schema. Multiple agent workflows.</h2>
+            <p>
+              A consistent schema makes policy review, exception handling, and
+              audit report generation easier to inspect during discovery.
+            </p>
+          </div>
+          <div class="code-block tall">
+            <div class="code-header">
+              <span>JSON event schema example</span>
+              <button class="copy-button" type="button" data-copy-target="schema-output">Copy schema</button>
+            </div>
+            <pre><code id="schema-output">{
+  "event_id": "evt_2026_06_21_0001",
+  "timestamp": "2026-06-21T17:42:11Z",
+  "agent_id": "agent-string",
+  "user_role": "role-string",
+  "action_type": "action-string",
+  "tool_called": "system-or-tool-name",
+  "data_touched": ["data-classification"],
+  "policy_context": "policy-identifier",
+  "human_approved": false,
+  "policy_matched": "policy-id-or-none",
+  "risk_score": 0,
+  "score_based_decision": "allow | flag | escalate | block",
+  "policy_override_applied": false,
+  "policy_rule_id": "policy-rule-id-or-none",
+  "final_decision": "allow | flag | escalate | block",
+  "reason": "plain-language evidence note"
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="audit-report" class="section-pad section-muted">
+        <div class="section-heading">
+          <p class="eyebrow">Audit report preview</p>
+          <h2>Synthetic sample report — not production data.</h2>
+        </div>
+        <div class="report-panel">
+          <div class="report-summary">
+            <div>
+              <span>Review period</span>
+              <strong>June 1-21, 2026</strong>
+            </div>
+            <div>
+              <span>Total actions reviewed</span>
+              <strong>1,284</strong>
+            </div>
+            <div>
+              <span>Allowed</span>
+              <strong>1,091</strong>
+            </div>
+            <div>
+              <span>Flagged</span>
+              <strong>126</strong>
+            </div>
+            <div>
+              <span>Escalated</span>
+              <strong>51</strong>
+            </div>
+            <div>
+              <span>Blocked</span>
+              <strong>16</strong>
+            </div>
+          </div>
+          <p class="top-policy">
+            Top policy triggered:
+            <strong>PII_CUSTOMER_COMMUNICATION_REVIEW</strong>
+          </p>
+          <div class="cta-row compact">
+            <button class="button secondary" type="button" id="copy-report-jsonl">Copy JSONL sample</button>
+            <button class="button primary" type="button" id="toggle-report-preview">View report preview</button>
+          </div>
+          <div class="report-preview" id="report-preview" hidden>
+            <p>
+              Synthetic review indicates most actions were allowed, while PII
+              communication and payment-adjacent actions created the clearest
+              review burden for compliance and platform teams.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pilot" class="section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Pilot scope</p>
+          <h2>v0 pilot scope</h2>
+        </div>
+        <div class="scope-grid">
+          <article class="info-card">
+            <h3>Included</h3>
+            <ul class="check-list">
+              <li>One integration point</li>
+              <li>One regulated workflow</li>
+              <li>One policy library</li>
+              <li>One normalized audit schema</li>
+              <li>One audit-ready report</li>
+              <li>4-8 week pilot window</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Out of scope</h3>
+            <ul class="check-list muted-list">
+              <li>Broad legal compliance claims</li>
+              <li>Full multi-framework enforcement</li>
+              <li>Multi-vertical policy libraries</li>
+              <li>Self-serve onboarding</li>
+              <li>Production blocking across every agent framework</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-pad section-muted">
+        <div class="personas">
+          <article class="persona-card">
+            <p class="eyebrow">Buyer</p>
+            <h2>Compliance Officer / CISO</h2>
+            <p>Needs:</p>
+            <ul>
+              <li>Accountability</li>
+              <li>Audit-ready reporting</li>
+              <li>Policy proof</li>
+              <li>Risk visibility</li>
+              <li>Renewal evidence</li>
+            </ul>
+          </article>
+          <article class="persona-card">
+            <p class="eyebrow">User</p>
+            <h2>Security / Platform Engineer</h2>
+            <p>Needs:</p>
+            <ul>
+              <li>Clean schema</li>
+              <li>Simple integration path</li>
+              <li>JSONL logs</li>
+              <li>Low maintenance burden</li>
+              <li>Clear failure modes</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Discovery focus — vertical not finalized.</p>
+          <h2>Which regulated workflow should be governed first?</h2>
+        </div>
+        <div class="vertical-grid">
+          <button class="vertical-card active" type="button">
+            <strong>Financial services</strong>
+            <span>Risky action: agent recommends account changes.</span>
+            <span>Policy concern: suitability review and approval evidence.</span>
+            <span>Evidence needed: action, data touched, policy match, reviewer state.</span>
+          </button>
+          <button class="vertical-card" type="button">
+            <strong>Healthcare operations</strong>
+            <span>Risky action: agent drafts patient-facing communication.</span>
+            <span>Policy concern: sensitive data exposure and human review.</span>
+            <span>Evidence needed: data class, approval status, reason for decision.</span>
+          </button>
+          <button class="vertical-card" type="button">
+            <strong>Insurance claims</strong>
+            <span>Risky action: agent changes claim status or payout routing.</span>
+            <span>Policy concern: authority threshold and exception handling.</span>
+            <span>Evidence needed: workflow step, amount threshold, escalation record.</span>
+          </button>
+          <button class="vertical-card" type="button">
+            <strong>Customer support in regulated industries</strong>
+            <span>Risky action: agent sends customer email using account data.</span>
+            <span>Policy concern: PII handling and communication approval.</span>
+            <span>Evidence needed: recipient context, data class, policy decision.</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="design-partner" class="section-pad cta-section">
+        <div class="section-heading">
+          <p class="eyebrow">Design partner CTA</p>
+          <h2>Are your AI agents already taking action?</h2>
+          <p>
+            If your organization is deploying AI agents that access records,
+            send communications, approve workflows, or trigger system changes,
+            we are looking for 2-3 design partners to validate the first
+            audit-ready governance workflow.
+          </p>
+        </div>
+        <form id="partner-form" class="partner-form">
+          <label>
+            Work email
+            <input type="email" name="workEmail" autocomplete="email" required>
+          </label>
+          <label>
+            Company
+            <input type="text" name="company" autocomplete="organization" required>
+          </label>
+          <label>
+            Role
+            <input type="text" name="role" autocomplete="organization-title" required>
+          </label>
+          <label>
+            Regulated industry
+            <input type="text" name="regulatedIndustry" required>
+          </label>
+          <label>
+            Are AI agents already deployed?
+            <select name="agentDeployment" required>
+              <option value="">Select one</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="planning">Planning</option>
+            </select>
+          </label>
+          <label class="full-field">
+            What is the riskiest action your agents can take?
+            <textarea name="riskiestAction" rows="4" required></textarea>
+          </label>
+          <button class="button primary full-field" type="submit">Request Design Partner Call</button>
+          <p class="form-success full-field" id="form-success" role="status" hidden>
+            Request captured locally for demo. Connect this form to CRM/email before launch.
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Pre-validation pilot concept. Synthetic demo only. AgentComply AI does
+        not provide legal advice or certify regulatory compliance.
+      </p>
+    </footer>
+
+    <script src="app.js?v=policy-overrides"></script>
+  </body>
+</html>
