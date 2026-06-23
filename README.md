@@ -81,6 +81,21 @@ The site includes a lightweight conversion layer for discovery calls without exp
 
 The form intentionally does not log work email, company, role, regulated industry, or free-text risk answers.
 
+## Design Partner Packet
+
+`design-partner.html` is a compact design-partner packet for outreach and discovery calls.
+
+It is intended for compliance leaders, risk leaders, CISOs, security/platform engineers, and AI governance teams evaluating one regulated AI-agent workflow. The page summarizes best-fit pilot workflows, pilot scope, design-partner inputs, expected outputs, success criteria, and the boundaries of the demo.
+
+The packet keeps the same no-backend and no-claim safety posture as the homepage:
+
+- No authentication, pricing, or backend submission
+- No live customer data by default
+- No legal advice or compliance certification claims
+- No SOC 2, HIPAA, production-readiness, customer, revenue, or partnership claims
+
+The packet supports outreach by giving prospective design partners a concise explanation of what a 4-8 week validation could test before they use the homepage form to request a design partner call.
+
 ## How To Run Locally
 
 Open `index.html` directly in a browser, or serve the folder with a local static server:
