@@ -35,8 +35,18 @@
             whether the action should be allowed, flagged, escalated, or blocked.
           </p>
           <div class="cta-row">
-            <a class="button primary" href="#design-partner">Request Design Partner Access</a>
-            <a class="button secondary" href="#audit-report">View Sample Audit Report</a>
+            <a
+              class="button primary"
+              href="#design-partner"
+              data-track-event="hero_cta_click"
+              data-cta-location="hero_primary"
+            >Request Design Partner Access</a>
+            <a
+              class="button secondary"
+              href="#demo"
+              data-track-event="demo_cta_click"
+              data-cta-location="hero_secondary"
+            >Test Risk Engine</a>
           </div>
           <p class="trust-note">
             Pre-validation pilot concept. Demo uses synthetic agent logs. No live customer data.
@@ -81,7 +91,32 @@
         </div>
       </section>
 
-      <section class="section-pad">
+      <section class="buyer-path section-pad" aria-labelledby="buyer-path-title">
+        <div class="section-heading inline-heading">
+          <p class="eyebrow">Fast path</p>
+          <h2 id="buyer-path-title">30-second buyer path</h2>
+        </div>
+        <div class="buyer-path-grid">
+          <a href="#problem">
+            <span>1</span>
+            <strong>See the risk</strong>
+          </a>
+          <a href="#demo">
+            <span>2</span>
+            <strong>Test the synthetic agent action</strong>
+          </a>
+          <a href="#schema">
+            <span>3</span>
+            <strong>Review the JSONL audit evidence</strong>
+          </a>
+          <a href="#design-partner">
+            <span>4</span>
+            <strong>Request design-partner access</strong>
+          </a>
+        </div>
+      </section>
+
+      <section id="problem" class="section-pad">
         <div class="section-heading">
           <p class="eyebrow">Problem</p>
           <h2>AI agents are taking actions faster than teams can prove control.</h2>
@@ -202,7 +237,7 @@
         </div>
       </section>
 
-      <section class="section-pad">
+      <section id="schema" class="section-pad">
         <div class="split-layout">
           <div class="section-heading inline-heading">
             <p class="eyebrow">Standard audit schema</p>
@@ -280,10 +315,52 @@
             <button class="button primary" type="button" id="toggle-report-preview">View report preview</button>
           </div>
           <div class="report-preview" id="report-preview" hidden>
+            <div class="report-detail-grid">
+              <div>
+                <span>Review period</span>
+                <strong>June 1-21, 2026</strong>
+              </div>
+              <div>
+                <span>Actions reviewed</span>
+                <strong>1,284</strong>
+              </div>
+              <div>
+                <span>Allowed</span>
+                <strong>1,091</strong>
+              </div>
+              <div>
+                <span>Flagged</span>
+                <strong>126</strong>
+              </div>
+              <div>
+                <span>Escalated</span>
+                <strong>51</strong>
+              </div>
+              <div>
+                <span>Blocked</span>
+                <strong>16</strong>
+              </div>
+              <div>
+                <span>Top policy triggered</span>
+                <strong>PII_CUSTOMER_COMMUNICATION_REVIEW</strong>
+              </div>
+              <div>
+                <span>Example final decision</span>
+                <strong>block</strong>
+              </div>
+              <div>
+                <span>Example reason code</span>
+                <strong>PAYMENT_ABOVE_THRESHOLD_NO_APPROVAL</strong>
+              </div>
+            </div>
             <p>
               Synthetic review indicates most actions were allowed, while PII
               communication and payment-adjacent actions created the clearest
               review burden for compliance and platform teams.
+            </p>
+            <p>
+              Synthetic sample only. This preview uses generated demo data, not
+              live customer data or production enforcement evidence.
             </p>
           </div>
         </div>
@@ -354,25 +431,25 @@
           <h2>Which regulated workflow should be governed first?</h2>
         </div>
         <div class="vertical-grid">
-          <button class="vertical-card active" type="button">
+          <button class="vertical-card active" type="button" data-vertical-choice="Financial services">
             <strong>Financial services</strong>
             <span>Risky action: agent recommends account changes.</span>
             <span>Policy concern: suitability review and approval evidence.</span>
             <span>Evidence needed: action, data touched, policy match, reviewer state.</span>
           </button>
-          <button class="vertical-card" type="button">
+          <button class="vertical-card" type="button" data-vertical-choice="Healthcare operations">
             <strong>Healthcare operations</strong>
             <span>Risky action: agent drafts patient-facing communication.</span>
             <span>Policy concern: sensitive data exposure and human review.</span>
             <span>Evidence needed: data class, approval status, reason for decision.</span>
           </button>
-          <button class="vertical-card" type="button">
+          <button class="vertical-card" type="button" data-vertical-choice="Insurance claims">
             <strong>Insurance claims</strong>
             <span>Risky action: agent changes claim status or payout routing.</span>
             <span>Policy concern: authority threshold and exception handling.</span>
             <span>Evidence needed: workflow step, amount threshold, escalation record.</span>
           </button>
-          <button class="vertical-card" type="button">
+          <button class="vertical-card" type="button" data-vertical-choice="Regulated customer support">
             <strong>Customer support in regulated industries</strong>
             <span>Risky action: agent sends customer email using account data.</span>
             <span>Policy concern: PII handling and communication approval.</span>
@@ -392,6 +469,34 @@
             audit-ready governance workflow.
           </p>
         </div>
+        <div class="conversion-grid">
+          <article class="info-card">
+            <h3>What this pilot is designed to validate</h3>
+            <ul class="check-list">
+              <li>Which agent actions create the highest audit risk</li>
+              <li>Which evidence fields compliance teams actually need</li>
+              <li>Whether JSONL audit records are useful for review</li>
+              <li>Which policy decisions should be deterministic</li>
+              <li>Which regulated workflow should be built first</li>
+            </ul>
+          </article>
+          <article class="info-card trust-box">
+            <h3>What this demo does not claim</h3>
+            <ul class="check-list muted-list">
+              <li>Not legal advice</li>
+              <li>Not a compliance certification</li>
+              <li>Not SOC 2 or HIPAA certified</li>
+              <li>Not connected to live customer data</li>
+              <li>Not a production enforcement system</li>
+              <li>Not a replacement for compliance, legal, or auditor judgment</li>
+            </ul>
+          </article>
+        </div>
+        <p class="qualification-note">
+          Best fit: teams testing or deploying AI agents that can access
+          records, send communications, approve workflows, or trigger system
+          changes.
+        </p>
         <form id="partner-form" class="partner-form">
           <label>
             Work email
@@ -418,6 +523,17 @@
               <option value="planning">Planning</option>
             </select>
           </label>
+          <label>
+            Which workflow is most relevant?
+            <select name="relevantWorkflow" required>
+              <option value="">Select one</option>
+              <option value="Financial services">Financial services</option>
+              <option value="Healthcare operations">Healthcare operations</option>
+              <option value="Insurance claims">Insurance claims</option>
+              <option value="Regulated customer support">Regulated customer support</option>
+              <option value="Other / exploring">Other / exploring</option>
+            </select>
+          </label>
           <label class="full-field">
             What is the riskiest action your agents can take?
             <textarea name="riskiestAction" rows="4" required></textarea>
@@ -437,6 +553,25 @@
       </p>
     </footer>
 
-    <script src="app.js?v=policy-overrides"></script>
+    <aside class="sticky-cta" id="sticky-cta" aria-label="Design partner access">
+      <p>Validating AI-agent audit evidence with 2-3 design partners.</p>
+      <div>
+        <a
+          class="button primary"
+          href="#design-partner"
+          data-track-event="hero_cta_click"
+          data-cta-location="sticky_request"
+        >Request Access</a>
+        <a
+          class="button secondary"
+          href="#demo"
+          data-track-event="demo_cta_click"
+          data-cta-location="sticky_demo"
+        >Test Demo</a>
+      </div>
+      <button class="sticky-cta-close" id="sticky-cta-close" type="button" aria-label="Dismiss sticky CTA">x</button>
+    </aside>
+
+    <script src="app.js?v=conversion-layer"></script>
   </body>
 </html>

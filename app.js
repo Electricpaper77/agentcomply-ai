@@ -88,6 +88,41 @@ const fieldLabels = [
   ["human_approved", "Human approved"],
   ["policy_matched", "Policy matched"]
 ];
+const allowedEventPayloadFields = [
+  "scenario_id",
+  "scenario_name",
+  "final_decision",
+  "policy_rule_id",
+  "vertical_choice",
+  "cta_location"
+];
+const allowedEventNames = [
+  "hero_cta_click",
+  "demo_cta_click",
+  "scenario_selected",
+  "schema_copied",
+  "jsonl_copied",
+  "report_preview_opened",
+  "form_started",
+  "form_submitted_local"
+];
+
+function trackEvent(eventName, payload = {}) {
+  if (!allowedEventNames.includes(eventName)) return;
+
+  const safePayload = {};
+
+  allowedEventPayloadFields.forEach((field) => {
+    if (Object.prototype.hasOwnProperty.call(payload, field) && payload[field] !== undefined) {
+      safePayload[field] = String(payload[field]);
+    }
+  });
+
+  console.log("AgentComply AI event", JSON.stringify({
+    event_name: eventName,
+    ...safePayload
+  }));
+}
 
 function calculateRiskScore(metrics) {
   return Math.round(
@@ -268,8 +303,9 @@ function copyText(text, button) {
 
   Promise.resolve()
     .then(() => {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        return navigator.clipboard.writeText(text);
+      const clipboard = window.navigator && window.navigator.clipboard;
+      if (clipboard && clipboard.writeText) {
+        return clipboard.writeText(text);
       }
       if (fallbackCopyText(text)) return;
       throw new Error("Clipboard unavailable");
@@ -292,12 +328,33 @@ function getReportJsonlSample() {
   return scenarios.map((scenario, index) => JSON.stringify(buildAuditEvent(scenario, index))).join("\n");
 }
 
+function getActiveScenarioIndex() {
+  const activeButton = document.querySelector("[data-scenario].active");
+  return activeButton ? Number(activeButton.dataset.scenario) : 0;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderScenario(0);
 
+  document.querySelectorAll("[data-track-event]").forEach((element) => {
+    element.addEventListener("click", () => {
+      trackEvent(element.dataset.trackEvent, {
+        cta_location: element.dataset.ctaLocation
+      });
+    });
+  });
+
   document.querySelectorAll("[data-scenario]").forEach((button) => {
     button.addEventListener("click", () => {
-      renderScenario(Number(button.dataset.scenario));
+      const index = Number(button.dataset.scenario);
+      renderScenario(index);
+      const event = buildAuditEvent(scenarios[index], index);
+      trackEvent("scenario_selected", {
+        scenario_id: String(index + 1),
+        scenario_name: scenarios[index].label,
+        final_decision: event.final_decision,
+        policy_rule_id: event.policy_rule_id
+      });
     });
   });
 
@@ -305,11 +362,30 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => {
       const target = document.querySelector(`#${button.dataset.copyTarget}`);
       copyText(target.textContent, button);
+      if (button.dataset.copyTarget === "schema-output") {
+        trackEvent("schema_copied", {
+          cta_location: "schema"
+        });
+      }
+      if (button.dataset.copyTarget === "jsonl-output") {
+        const index = getActiveScenarioIndex();
+        const event = buildAuditEvent(scenarios[index], index);
+        trackEvent("jsonl_copied", {
+          scenario_id: String(index + 1),
+          scenario_name: scenarios[index].label,
+          final_decision: event.final_decision,
+          policy_rule_id: event.policy_rule_id,
+          cta_location: "risk_engine"
+        });
+      }
     });
   });
 
   document.querySelector("#copy-report-jsonl").addEventListener("click", (event) => {
     copyText(getReportJsonlSample(), event.currentTarget);
+    trackEvent("jsonl_copied", {
+      cta_location: "report_sample"
+    });
   });
 
   document.querySelector("#toggle-report-preview").addEventListener("click", (event) => {
@@ -317,6 +393,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const isHidden = preview.hasAttribute("hidden");
     preview.toggleAttribute("hidden");
     event.currentTarget.textContent = isHidden ? "Hide report preview" : "View report preview";
+    if (isHidden) {
+      trackEvent("report_preview_opened", {
+        cta_location: "audit_report"
+      });
+    }
   });
 
   document.querySelectorAll(".vertical-card").forEach((card) => {
@@ -326,12 +407,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.querySelector("#partner-form").addEventListener("submit", (event) => {
+  const partnerForm = document.querySelector("#partner-form");
+  let formStarted = false;
+
+  partnerForm.addEventListener("focusin", () => {
+    if (formStarted) return;
+    formStarted = true;
+    trackEvent("form_started", {
+      cta_location: "design_partner_form"
+    });
+  });
+
+  partnerForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const payload = Object.fromEntries(formData.entries());
-    console.log("AgentComply AI design partner request", payload);
+    trackEvent("form_submitted_local", {
+      vertical_choice: payload.relevantWorkflow,
+      cta_location: "design_partner_form"
+    });
     document.querySelector("#form-success").hidden = false;
     event.currentTarget.reset();
+  });
+
+  document.querySelector("#sticky-cta-close").addEventListener("click", () => {
+    document.querySelector("#sticky-cta").hidden = true;
   });
 });

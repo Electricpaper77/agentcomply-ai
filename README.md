@@ -67,6 +67,20 @@ The JSONL evidence records include:
 
 This remains a synthetic demo only. It does not use live customer data, provide legal advice, certify regulatory compliance, or claim production readiness.
 
+## Design-Partner Conversion Layer
+
+The site includes a lightweight conversion layer for discovery calls without expanding product scope:
+
+- A 30-second buyer path that links buyers from risk framing to the demo, JSONL evidence, and design-partner form
+- A local-only design partner form with no backend submission
+- A required workflow-fit dropdown to help qualify discovery conversations
+- Safe console-only event logging through `trackEvent(eventName, payload = {})`
+- No external analytics service, cookies, tracking pixels, or personal data logging
+- Event payloads limited to non-personal fields such as scenario, decision, policy rule, vertical choice, and CTA location
+- A synthetic-only audit report preview using generated demo data
+
+The form intentionally does not log work email, company, role, regulated industry, or free-text risk answers.
+
 ## How To Run Locally
 
 Open `index.html` directly in a browser, or serve the folder with a local static server:
