@@ -1,14 +1,22 @@
 const scenarios = [
   {
-    label: "A. Low-risk CRM lookup",
+    label: "Low-risk CRM lookup",
     agent_id: "crm-research-agent-018",
-    user_role: "account_manager",
+    user_role: "support_specialist",
     action_type: "crm_lookup",
     tool_called: "crm.records.read",
-    data_touched: ["company profile", "account status"],
-    policy_context: "STANDARD_CRM_READ_ACCESS",
+    data_touched: ["account status", "case history"],
+    policy_context: "REGULATED_CUSTOMER_SUPPORT",
     human_approved: true,
-    policy_matched: "STANDARD_CRM_READ_ACCESS",
+    approval_status: "not_required",
+    amount_usd: 0,
+    threshold_usd: 500,
+    reviewer_id: "n/a",
+    message_channel: "n/a",
+    recipient_type: "internal",
+    allowed_tools: ["crm.records.read", "case.notes.read"],
+    missing_audit_fields: [],
+    prompt_injection_detected: false,
     metrics: {
       action_criticality: 15,
       data_sensitivity: 20,
@@ -16,18 +24,26 @@ const scenarios = [
       approval_gap: 0,
       audit_completeness_gap: 0
     },
-    reason: "Read-only lookup uses low-sensitivity account data with complete audit fields."
+    reason: "Read-only lookup uses support context with complete audit fields."
   },
   {
-    label: "B. Customer email with PII and no human approval",
+    label: "Customer email with PII and no approval",
     agent_id: "support-agent-042",
     user_role: "customer_support",
     action_type: "customer_email",
     tool_called: "email.send_draft",
     data_touched: ["customer email", "account notes", "PII"],
-    policy_context: "PII_CUSTOMER_COMMUNICATION_REVIEW",
+    policy_context: "REGULATED_CUSTOMER_SUPPORT",
     human_approved: false,
-    policy_matched: "PII_CUSTOMER_COMMUNICATION_REVIEW",
+    approval_status: "missing",
+    amount_usd: 0,
+    threshold_usd: 500,
+    reviewer_id: null,
+    message_channel: "email",
+    recipient_type: "customer",
+    allowed_tools: ["email.send_draft", "crm.records.read"],
+    missing_audit_fields: [],
+    prompt_injection_detected: false,
     metrics: {
       action_criticality: 65,
       data_sensitivity: 80,
@@ -38,15 +54,23 @@ const scenarios = [
     reason: "PII appears in a customer-facing communication without human approval."
   },
   {
-    label: "C. Refund/payment action above threshold",
+    label: "Refund/payment action above threshold",
     agent_id: "billing-agent-117",
     user_role: "billing_operations",
     action_type: "refund_payment_action",
     tool_called: "payments.refund.create",
     data_touched: ["customer account", "payment method token", "refund amount"],
-    policy_context: "PAYMENT_THRESHOLD_REVIEW",
+    policy_context: "REGULATED_CUSTOMER_SUPPORT",
     human_approved: false,
-    policy_matched: "PAYMENT_THRESHOLD_REVIEW",
+    approval_status: "missing",
+    amount_usd: 1250,
+    threshold_usd: 500,
+    reviewer_id: null,
+    message_channel: "n/a",
+    recipient_type: "customer",
+    allowed_tools: ["payments.refund.create", "payments.refund.quote", "crm.records.read"],
+    missing_audit_fields: [],
+    prompt_injection_detected: false,
     metrics: {
       action_criticality: 90,
       data_sensitivity: 75,
@@ -57,15 +81,23 @@ const scenarios = [
     reason: "Payment-adjacent action exceeds review threshold and lacks approval evidence."
   },
   {
-    label: "D. Missing audit fields",
+    label: "Missing audit fields",
     agent_id: "workflow-agent-003",
     user_role: "platform_operator",
     action_type: "record_update",
     tool_called: "workflow.records.update",
     data_touched: ["workflow record", "customer status"],
-    policy_context: "INCOMPLETE_EVIDENCE_REVIEW",
+    policy_context: "REGULATED_CUSTOMER_SUPPORT",
     human_approved: true,
-    policy_matched: "INCOMPLETE_EVIDENCE_REVIEW",
+    approval_status: "approved",
+    amount_usd: 0,
+    threshold_usd: 500,
+    reviewer_id: "reviewer-218",
+    message_channel: "case_note",
+    recipient_type: "internal",
+    allowed_tools: ["workflow.records.update", "crm.records.read"],
+    missing_audit_fields: ["timestamp", "tool_called", "policy_context"],
+    prompt_injection_detected: false,
     metrics: {
       action_criticality: 45,
       data_sensitivity: 55,
@@ -73,11 +105,41 @@ const scenarios = [
       approval_gap: 30,
       audit_completeness_gap: 90
     },
-    reason: "Required audit fields are missing, so the event needs follow-up before reporting."
+    reason: "Required audit fields are missing, so the event is blocked before reporting."
   }
 ];
 
-const schemaVersion = "agentcomply.synthetic.audit.v0";
+const schemaVersion = "agentcomply.policy_pack_v1.audit";
+const policyRules = {
+  piiReview: {
+    rule_id: "PII_OUTBOUND_MESSAGE_REQUIRES_REVIEW",
+    decision: "escalate",
+    reason_code: "PII_OUTBOUND_REVIEW_REQUIRED",
+    required_evidence: ["message_channel", "recipient_type", "data_touched", "human_approved", "reviewer_id"],
+    reason: "Outbound customer message touched PII without required review."
+  },
+  paymentApproval: {
+    rule_id: "PAYMENT_OR_REFUND_ABOVE_THRESHOLD_REQUIRES_APPROVAL",
+    decision: "escalate",
+    reason_code: "PAYMENT_THRESHOLD_APPROVAL_REQUIRED",
+    required_evidence: ["amount_usd", "threshold_usd", "approval_status", "approver_role", "tool_called"],
+    reason: "Refund or payment-adjacent action exceeded the approval threshold."
+  },
+  missingAuditFields: {
+    rule_id: "MISSING_AUDIT_FIELDS_BLOCK",
+    decision: "block",
+    reason_code: "AUDIT_FIELDS_MISSING",
+    required_evidence: ["event_id", "timestamp", "agent_id", "action_type", "tool_called", "policy_context"],
+    reason: "Required audit fields are missing from the agent event."
+  },
+  promptInjection: {
+    rule_id: "PROMPT_INJECTION_OR_UNAUTHORIZED_TOOL_USE_BLOCK",
+    decision: "block",
+    reason_code: "UNAUTHORIZED_TOOL_OR_PROMPT_INJECTION",
+    required_evidence: ["prompt_signal", "tool_called", "allowed_tools", "policy_context", "detection_source"],
+    reason: "Prompt-injection signal or unauthorized tool use appeared in the event."
+  }
+};
 const fieldLabels = [
   ["agent_id", "Agent ID"],
   ["user_role", "User role"],
@@ -86,7 +148,9 @@ const fieldLabels = [
   ["data_touched", "Data touched"],
   ["policy_context", "Policy context"],
   ["human_approved", "Human approved"],
-  ["policy_matched", "Policy matched"]
+  ["approval_status", "Approval status"],
+  ["policy_matched", "Policy matched"],
+  ["reason_code", "Reason code"]
 ];
 const allowedEventPayloadFields = [
   "scenario_id",
@@ -175,49 +239,31 @@ function evaluatePolicyOverride(scenario) {
   const metrics = scenario.metrics;
 
   if (
-    includesActionTerm(scenario.action_type, ["refund", "payment"]) &&
-    metrics.action_criticality >= 85 &&
-    metrics.policy_violation_severity >= 80 &&
-    metrics.approval_gap >= 70
+    scenario.prompt_injection_detected ||
+    !scenario.allowed_tools.includes(scenario.tool_called)
   ) {
-    return {
-      decision: "block",
-      rule_id: "PAYMENT_ABOVE_THRESHOLD_NO_APPROVAL",
-      reason: "High-risk payment or refund action exceeded policy threshold without human approval."
-    };
+    return policyRules.promptInjection;
+  }
+
+  if (scenario.missing_audit_fields.length > 0 || metrics.audit_completeness_gap >= 80) {
+    return policyRules.missingAuditFields;
+  }
+
+  if (
+    includesActionTerm(scenario.action_type, ["refund", "payment"]) &&
+    scenario.amount_usd > scenario.threshold_usd &&
+    scenario.approval_status !== "approved"
+  ) {
+    return policyRules.paymentApproval;
   }
 
   if (
     includesActionTerm(scenario.action_type, ["customer email", "customer communication"]) &&
     touchesPii(scenario.data_touched) &&
-    metrics.approval_gap >= 70
+    scenario.recipient_type === "customer" &&
+    scenario.approval_status !== "approved"
   ) {
-    return {
-      decision: "escalate",
-      rule_id: "PII_CUSTOMER_COMMUNICATION_NO_APPROVAL",
-      reason: "Customer-facing communication touched PII without required human approval."
-    };
-  }
-
-  if (metrics.audit_completeness_gap >= 80) {
-    return {
-      decision: "flag",
-      rule_id: "MISSING_REQUIRED_AUDIT_FIELDS",
-      reason: "Required audit evidence is incomplete and needs review before reporting."
-    };
-  }
-
-  if (
-    metrics.action_criticality <= 20 &&
-    metrics.data_sensitivity <= 25 &&
-    metrics.policy_violation_severity === 0 &&
-    metrics.audit_completeness_gap === 0
-  ) {
-    return {
-      decision: "allow",
-      rule_id: "LOW_RISK_READ_ONLY_COMPLETE_AUDIT",
-      reason: "Read-only low-risk action with complete audit evidence."
-    };
+    return policyRules.piiReview;
   }
 
   return null;
@@ -228,11 +274,13 @@ function buildAuditEvent(scenario, index) {
   const score_based_decision = getDecision(risk_score);
   const policyOverride = evaluatePolicyOverride(scenario);
   const final_decision = policyOverride ? policyOverride.decision : score_based_decision;
+  const reasonCode = policyOverride ? policyOverride.reason_code : "LOW_RISK_SUPPORT_LOOKUP_ALLOWED";
 
   return {
     schema_version: schemaVersion,
     event_id: `synthetic_evt_${String(index + 1).padStart(3, "0")}`,
     timestamp: "2026-06-21T17:42:11Z",
+    workflow: "regulated_customer_support",
     agent_id: scenario.agent_id,
     user_role: scenario.user_role,
     action_type: scenario.action_type,
@@ -240,13 +288,22 @@ function buildAuditEvent(scenario, index) {
     data_touched: scenario.data_touched,
     policy_context: scenario.policy_context,
     human_approved: scenario.human_approved,
-    policy_matched: scenario.policy_matched,
+    approval_status: scenario.approval_status,
+    amount_usd: scenario.amount_usd,
+    threshold_usd: scenario.threshold_usd,
+    reviewer_id: scenario.reviewer_id,
+    message_channel: scenario.message_channel,
+    recipient_type: scenario.recipient_type,
+    missing_audit_fields: scenario.missing_audit_fields,
+    policy_matched: policyOverride ? policyOverride.rule_id : "NONE",
     risk_score,
     score_based_decision,
     policy_override_applied: Boolean(policyOverride),
     policy_rule_id: policyOverride ? policyOverride.rule_id : "NONE",
     final_decision,
+    reason_code: reasonCode,
     reason: policyOverride ? policyOverride.reason : scenario.reason,
+    required_evidence: policyOverride ? policyOverride.required_evidence : ["event_id", "timestamp", "agent_id", "action_type", "tool_called", "policy_context"],
     scoring_inputs: scenario.metrics
   };
 }
@@ -278,7 +335,7 @@ function renderScenario(index) {
   decisionReason.textContent = event.reason;
   decisionPill.textContent = event.final_decision;
   decisionPill.className = `decision-pill decision-${event.final_decision}`;
-  jsonOutput.textContent = JSON.stringify(event, null, 2);
+  jsonOutput.textContent = JSON.stringify(event);
 
   document.querySelectorAll("[data-scenario]").forEach((button) => {
     button.classList.toggle("active", Number(button.dataset.scenario) === index);
@@ -317,15 +374,18 @@ function copyText(text, button) {
       }, 1400);
     })
     .catch(() => {
+      if (!fallbackCopyText(text)) {
+        button.textContent = "Copy failed";
+        window.setTimeout(() => {
+          button.textContent = resetLabel;
+        }, 1400);
+        return;
+      }
       button.textContent = "Copied";
       window.setTimeout(() => {
         button.textContent = resetLabel;
       }, 1400);
     });
-}
-
-function getReportJsonlSample() {
-  return scenarios.map((scenario, index) => JSON.stringify(buildAuditEvent(scenario, index))).join("\n");
 }
 
 function getActiveScenarioIndex() {
@@ -381,25 +441,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.querySelector("#copy-report-jsonl").addEventListener("click", (event) => {
-    copyText(getReportJsonlSample(), event.currentTarget);
-    trackEvent("jsonl_copied", {
-      cta_location: "report_sample"
-    });
-  });
-
-  document.querySelector("#toggle-report-preview").addEventListener("click", (event) => {
-    const preview = document.querySelector("#report-preview");
-    const isHidden = preview.hasAttribute("hidden");
-    preview.toggleAttribute("hidden");
-    event.currentTarget.textContent = isHidden ? "Hide report preview" : "View report preview";
-    if (isHidden) {
-      trackEvent("report_preview_opened", {
-        cta_location: "audit_report"
-      });
-    }
-  });
-
   document.querySelectorAll(".vertical-card").forEach((card) => {
     card.addEventListener("click", () => {
       document.querySelectorAll(".vertical-card").forEach((item) => item.classList.remove("active"));
@@ -422,11 +463,27 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const payload = Object.fromEntries(formData.entries());
+    const emailBody = [
+      "AgentComply AI pilot request",
+      "",
+      `Next step: ${payload.requestType}`,
+      `Work email: ${payload.workEmail}`,
+      `Company: ${payload.company}`,
+      `Role: ${payload.role}`,
+      `Regulated industry example: ${payload.regulatedIndustry}`,
+      `Agents deployed: ${payload.agentDeployment}`,
+      `Workflow: ${payload.relevantWorkflow}`,
+      `Riskiest action: ${payload.riskiestAction}`
+    ].join("\n");
+    const mailtoFallback = document.querySelector("#mailto-fallback");
+
     trackEvent("form_submitted_local", {
       vertical_choice: payload.relevantWorkflow,
       cta_location: "design_partner_form"
     });
     document.querySelector("#form-success").hidden = false;
+    mailtoFallback.href = `mailto:hello@agentcomply.ai?subject=${encodeURIComponent(payload.requestType)}&body=${encodeURIComponent(emailBody)}`;
+    mailtoFallback.hidden = false;
     event.currentTarget.reset();
   });
 
