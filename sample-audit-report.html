@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AgentComply AI | Sample Audit Report</title>
+    <meta
+      name="description"
+      content="Static sample audit report for the AgentComply AI regulated customer support Policy Pack v1 pilot."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="packet-page">
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="AgentComply AI home">
+        <span class="brand-mark">AC</span>
+        <span>AgentComply AI</span>
+      </a>
+      <nav class="nav-links" aria-label="Report navigation">
+        <a href="index.html#policy-pack">Policy Pack</a>
+        <a href="index.html#demo">Scenarios</a>
+        <a href="index.html#design-partner">Design partner</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section-pad packet-hero">
+        <div class="section-heading">
+          <p class="eyebrow">Sample audit report</p>
+          <h1>Regulated Customer Support Policy Pack v1</h1>
+          <p>
+            Static buyer preview using synthetic audit data. Built to show how
+            customer-support agent actions can be reviewed, escalated, blocked,
+            and reported during a pilot.
+          </p>
+        </div>
+        <div class="proof-grid" aria-label="Trust boundaries">
+          <span>Not legal advice.</span>
+          <span>Not compliance certification.</span>
+          <span>Not SOC 2/HIPAA certified.</span>
+          <span>Synthetic demo only.</span>
+          <span>Not connected to live customer data.</span>
+          <span>Not production enforcement.</span>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <div class="report-panel">
+          <div class="section-heading">
+            <p class="eyebrow">Executive summary</p>
+            <h2>Audit review snapshot</h2>
+          </div>
+          <div class="report-summary">
+            <div>
+              <span>Review period</span>
+              <strong>June 1-21, 2026</strong>
+            </div>
+            <div>
+              <span>Total actions reviewed</span>
+              <strong>1,284</strong>
+            </div>
+            <div>
+              <span>Allowed</span>
+              <strong>1,091</strong>
+            </div>
+            <div>
+              <span>Flagged</span>
+              <strong>126</strong>
+            </div>
+            <div>
+              <span>Escalated</span>
+              <strong>51</strong>
+            </div>
+            <div>
+              <span>Blocked</span>
+              <strong>16</strong>
+            </div>
+          </div>
+          <p class="top-policy">
+            Top triggered policy:
+            <strong>PII_OUTBOUND_MESSAGE_REQUIRES_REVIEW</strong>
+          </p>
+        </div>
+      </section>
+
+      <section class="section-pad section-muted">
+        <div class="scope-grid">
+          <article class="info-card">
+            <p class="eyebrow">Sample blocked decision</p>
+            <h3>MISSING_AUDIT_FIELDS_BLOCK</h3>
+            <p>
+              A support-agent event attempted to update a customer workflow
+              record, but timestamp, tool_called, and policy_context evidence
+              were missing from the source event.
+            </p>
+            <ul class="check-list">
+              <li>Final decision: block</li>
+              <li>Reason code: AUDIT_FIELDS_MISSING</li>
+              <li>Required evidence: event_id, timestamp, agent_id, action_type, tool_called, policy_context</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <p class="eyebrow">Sample escalated decision</p>
+            <h3>PAYMENT_OR_REFUND_ABOVE_THRESHOLD_REQUIRES_APPROVAL</h3>
+            <p>
+              A billing agent attempted a refund above the approval threshold
+              without reviewer evidence.
+            </p>
+            <ul class="check-list">
+              <li>Final decision: escalate</li>
+              <li>Reason code: PAYMENT_THRESHOLD_APPROVAL_REQUIRED</li>
+              <li>Required evidence: amount_usd, threshold_usd, approval_status, approver_role, tool_called</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <div class="section-heading">
+          <p class="eyebrow">Evidence fields required</p>
+          <h2>Minimum fields for pilot review</h2>
+          <p>
+            Evidence fields required for this sample report are grouped by
+            event identity, policy context, and approval evidence.
+          </p>
+        </div>
+        <div class="card-grid three">
+          <article class="info-card">
+            <h3>Event identity</h3>
+            <p>event_id, timestamp, workflow, agent_id, user_role, action_type, and tool_called.</p>
+          </article>
+          <article class="info-card">
+            <h3>Policy context</h3>
+            <p>data_touched, policy_context, policy_matched, policy_rule_id, final_decision, and reason_code.</p>
+          </article>
+          <article class="info-card">
+            <h3>Approval evidence</h3>
+            <p>human_approved, approval_status, reviewer_id, amount_usd, threshold_usd, and missing_audit_fields.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Not legal advice. Not compliance certification. Not SOC 2/HIPAA
+        certified. Synthetic demo only. Not connected to live customer data.
+        Not production enforcement.
+      </p>
+      <a href="index.html#design-partner">Request design partner review</a>
+    </footer>
+  </body>
+</html>

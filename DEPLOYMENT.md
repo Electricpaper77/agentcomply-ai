@@ -23,16 +23,16 @@ Then review:
 - Scenario buttons render the expected decisions
 - JSONL output parses correctly
 - Copy buttons work
-- Report preview opens
-- Design partner form shows the local success state
+- Sample audit report page opens
+- Design partner form shows the backend-not-configured mailto fallback
 - Mobile layout has no horizontal overflow
 
 ## Expected Scenario Decisions
 
-- Scenario A final decision: `allow`
-- Scenario B final decision: `escalate`
-- Scenario C: `risk_score` `73`, score-based decision `escalate`, policy rule `PAYMENT_ABOVE_THRESHOLD_NO_APPROVAL`, final decision `block`
-- Scenario D final decision: `flag`
+- Low-risk CRM lookup final decision: `allow`
+- Customer email with PII and no approval final decision: `escalate`
+- Refund/payment action above threshold final decision: `escalate`
+- Missing audit fields final decision: `block`
 
 ## GitHub Setup
 

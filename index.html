@@ -6,7 +6,7 @@
     <title>AgentComply AI | AI Agent Audit Evidence Layer</title>
     <meta
       name="description"
-      content="AgentComply AI is an audit evidence layer for autonomous AI-agent actions in regulated workflows."
+      content="AgentComply AI is a regulated customer support pilot for AI-agent audit evidence, policy decisions, and buyer-ready review workflows."
     >
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -17,9 +17,9 @@
         <span>AgentComply AI</span>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#workflow">Workflow</a>
-        <a href="#demo">Demo</a>
-        <a href="#pilot">Pilot</a>
+        <a href="#policy-pack">Policy Pack</a>
+        <a href="#demo">Scenarios</a>
+        <a href="#audit-report">Report</a>
         <a href="#design-partner">Design partner</a>
       </nav>
     </header>
@@ -28,11 +28,17 @@
       <section class="hero section-pad">
         <div class="hero-content">
           <p class="eyebrow">Pre-validation pilot concept</p>
-          <h1>Govern what your AI agents do before regulators ask.</h1>
+          <h1>Govern AI-agent actions before they become audit problems.</h1>
           <p class="hero-copy">
-            AgentComply AI creates audit-ready evidence for AI-agent actions:
-            what the agent did, what data it touched, which policy applied, and
-            whether the action should be allowed, flagged, escalated, or blocked.
+            AgentComply AI creates synthetic, audit-ready evidence for
+            regulated customer-support agents: what action was attempted, what
+            data was touched, which policy applied, whether approval existed,
+            and why the action was allowed, flagged, escalated, or blocked.
+          </p>
+          <p class="hero-copy">
+            Built first for teams validating AI agents that send customer
+            messages, access account data, or trigger refund/payment-adjacent
+            workflows.
           </p>
           <div class="cta-row">
             <a
@@ -40,22 +46,23 @@
               href="#design-partner"
               data-track-event="hero_cta_click"
               data-cta-location="hero_primary"
-            >Request Design Partner Access</a>
+            >Request Design Partner Review</a>
             <a
               class="button secondary"
               href="#demo"
               data-track-event="demo_cta_click"
               data-cta-location="hero_secondary"
-            >Test Risk Engine</a>
-            <a class="packet-link" href="design-partner.html">Design Partner Packet</a>
+            >Build Scenario</a>
+            <a class="packet-link" href="sample-audit-report.html">View Sample Audit Report</a>
           </div>
           <p class="trust-note">
-            Pre-validation pilot concept. Demo uses synthetic agent logs. No live customer data.
+            Synthetic demo only. Not connected to live customer data. Not production enforcement.
           </p>
           <div class="proof-grid" aria-label="Proof badges">
+            <span>Regulated customer support</span>
             <span>Synthetic JSONL audit logs</span>
-            <span>Policy decision engine</span>
-            <span>Audit report preview</span>
+            <span>Deterministic policy rules</span>
+            <span>Sample audit report</span>
           </div>
         </div>
 
@@ -68,7 +75,7 @@
           <div class="status-card decision-escalate">
             <p>Decision</p>
             <strong>escalate</strong>
-            <small>PII review required before customer communication.</small>
+            <small>PII outbound message requires review before send.</small>
           </div>
           <div class="event-stack">
             <div>
@@ -77,7 +84,7 @@
             </div>
             <div>
               <span>policy_matched</span>
-              <strong>PII_CUSTOMER_COMMUNICATION_REVIEW</strong>
+              <strong>PII_OUTBOUND_MESSAGE_REQUIRES_REVIEW</strong>
             </div>
             <div>
               <span>evidence_status</span>
@@ -87,7 +94,7 @@
           <pre class="mini-code" aria-label="Sample evidence JSON"><code>{
   "action_type": "customer_email",
   "decision": "escalate",
-  "risk_score": 67
+  "reason_code": "PII_OUTBOUND_REVIEW_REQUIRED"
 }</code></pre>
         </div>
       </section>
@@ -98,21 +105,21 @@
           <h2 id="buyer-path-title">30-second buyer path</h2>
         </div>
         <div class="buyer-path-grid">
-          <a href="#problem">
+          <a href="#policy-pack">
             <span>1</span>
-            <strong>See the risk</strong>
+            <strong>Review Policy Pack v1</strong>
           </a>
           <a href="#demo">
             <span>2</span>
-            <strong>Test the synthetic agent action</strong>
+            <strong>Build a support scenario</strong>
           </a>
-          <a href="#schema">
+          <a href="#audit-report">
             <span>3</span>
-            <strong>Review the JSONL audit evidence</strong>
+            <strong>Preview the audit report</strong>
           </a>
           <a href="#design-partner">
             <span>4</span>
-            <strong>Request design-partner access</strong>
+            <strong>Pick the next step</strong>
           </a>
         </div>
       </section>
@@ -120,12 +127,12 @@
       <section id="problem" class="section-pad">
         <div class="section-heading">
           <p class="eyebrow">Problem</p>
-          <h2>AI agents are taking actions faster than teams can prove control.</h2>
+          <h2>Customer support agents can create audit risk in one message.</h2>
         </div>
         <div class="card-grid three">
           <article class="info-card">
             <h3>Agents act autonomously</h3>
-            <p>Modern agents can access systems, update records, send messages, and trigger workflows with limited human review.</p>
+            <p>Support agents can look up account data, draft customer emails, and initiate refund workflows with limited human review.</p>
           </article>
           <article class="info-card">
             <h3>Audit trails are incomplete</h3>
@@ -133,7 +140,7 @@
           </article>
           <article class="info-card">
             <h3>Accountability already exists</h3>
-            <p>Teams still need to explain who approved an action, what evidence exists, and how exceptions were handled.</p>
+            <p>Teams still need to prove what the agent touched, why the action was allowed, and when escalation or blocking happened.</p>
           </article>
         </div>
       </section>
@@ -181,21 +188,71 @@
         </p>
       </section>
 
+      <section id="policy-pack" class="section-pad section-muted">
+        <div class="section-heading">
+          <p class="eyebrow">Policy Pack v1</p>
+          <h2>Policy Pack v1: Regulated Customer Support</h2>
+          <p>
+            Four deterministic rules turn synthetic support-agent activity into
+            allow, flag, escalate, or block decisions with inspectable evidence.
+          </p>
+        </div>
+        <div class="policy-grid">
+          <article class="policy-card">
+            <h3>PII_OUTBOUND_MESSAGE_REQUIRES_REVIEW</h3>
+            <dl>
+              <div><dt>Trigger</dt><dd>Outbound customer message touches PII and lacks human approval.</dd></div>
+              <div><dt>Required evidence</dt><dd>message_channel, recipient_type, data_touched, human_approved, reviewer_id.</dd></div>
+              <div><dt>Decision</dt><dd>escalate</dd></div>
+              <div><dt>Reason code</dt><dd>PII_OUTBOUND_REVIEW_REQUIRED</dd></div>
+            </dl>
+          </article>
+          <article class="policy-card">
+            <h3>PAYMENT_OR_REFUND_ABOVE_THRESHOLD_REQUIRES_APPROVAL</h3>
+            <dl>
+              <div><dt>Trigger</dt><dd>Refund or payment-adjacent action exceeds the policy threshold.</dd></div>
+              <div><dt>Required evidence</dt><dd>amount_usd, threshold_usd, approval_status, approver_role, tool_called.</dd></div>
+              <div><dt>Decision</dt><dd>escalate</dd></div>
+              <div><dt>Reason code</dt><dd>PAYMENT_THRESHOLD_APPROVAL_REQUIRED</dd></div>
+            </dl>
+          </article>
+          <article class="policy-card">
+            <h3>MISSING_AUDIT_FIELDS_BLOCK</h3>
+            <dl>
+              <div><dt>Trigger</dt><dd>Required audit fields are absent from the agent event.</dd></div>
+              <div><dt>Required evidence</dt><dd>event_id, timestamp, agent_id, action_type, tool_called, policy_context.</dd></div>
+              <div><dt>Decision</dt><dd>block</dd></div>
+              <div><dt>Reason code</dt><dd>AUDIT_FIELDS_MISSING</dd></div>
+            </dl>
+          </article>
+          <article class="policy-card">
+            <h3>PROMPT_INJECTION_OR_UNAUTHORIZED_TOOL_USE_BLOCK</h3>
+            <dl>
+              <div><dt>Trigger</dt><dd>Prompt-injection signal or unauthorized tool use appears in the event.</dd></div>
+              <div><dt>Required evidence</dt><dd>prompt_signal, tool_called, allowed_tools, policy_context, detection_source.</dd></div>
+              <div><dt>Decision</dt><dd>block</dd></div>
+              <div><dt>Reason code</dt><dd>UNAUTHORIZED_TOOL_OR_PROMPT_INJECTION</dd></div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
       <section id="demo" class="section-pad section-muted">
         <div class="section-heading">
-          <p class="eyebrow">Interactive demo</p>
-          <h2>Agent Compliance Risk Engine</h2>
+          <p class="eyebrow">Interactive scenario builder</p>
+          <h2>Build a regulated customer support audit record.</h2>
           <p>
-            Weighted scoring estimates risk severity. Hard policy rules override
-            the score when a regulated action requires a deterministic decision.
+            Select a preset scenario to generate a synthetic JSONL audit record
+            with the matched policy rule, required evidence, final decision, and
+            reason code.
           </p>
         </div>
         <div class="demo-layout">
           <div class="scenario-list" aria-label="Synthetic scenarios">
-            <button class="scenario-button active" type="button" data-scenario="0">A. Low-risk CRM lookup</button>
-            <button class="scenario-button" type="button" data-scenario="1">B. Customer email with PII and no human approval</button>
-            <button class="scenario-button" type="button" data-scenario="2">C. Refund/payment action above threshold</button>
-            <button class="scenario-button" type="button" data-scenario="3">D. Missing audit fields</button>
+            <button class="scenario-button active" type="button" data-scenario="0">Low-risk CRM lookup</button>
+            <button class="scenario-button" type="button" data-scenario="1">Customer email with PII and no approval</button>
+            <button class="scenario-button" type="button" data-scenario="2">Refund/payment action above threshold</button>
+            <button class="scenario-button" type="button" data-scenario="3">Missing audit fields</button>
           </div>
           <article class="demo-panel">
             <div class="demo-header">
@@ -209,7 +266,7 @@
             <div class="score-row">
               <div class="decision-metrics">
                 <div>
-                  <span>Weighted score</span>
+                  <span>Risk score</span>
                   <strong id="risk-score">0</strong>
                 </div>
                 <div>
@@ -217,7 +274,7 @@
                   <strong id="score-based-decision">allow</strong>
                 </div>
                 <div>
-                  <span>Policy rule applied</span>
+                  <span>Triggered policy</span>
                   <strong id="policy-rule">No override</strong>
                 </div>
                 <div>
@@ -225,12 +282,12 @@
                   <strong id="final-decision">allow</strong>
                 </div>
               </div>
-              <p id="decision-reason">Reason text.</p>
+              <p><strong>Risk reason</strong><span id="decision-reason">Reason text.</span></p>
             </div>
             <div class="code-block">
               <div class="code-header">
                 <span>JSONL audit record</span>
-                <button class="copy-button" type="button" data-copy-target="jsonl-output">Copy</button>
+                <button class="copy-button" type="button" data-copy-target="jsonl-output">Copy JSONL</button>
               </div>
               <pre><code id="jsonl-output"></code></pre>
             </div>
@@ -242,10 +299,10 @@
         <div class="split-layout">
           <div class="section-heading inline-heading">
             <p class="eyebrow">Standard audit schema</p>
-            <h2>One event schema. Multiple agent workflows.</h2>
+            <h2>One event schema for regulated customer support.</h2>
             <p>
-              A consistent schema makes policy review, exception handling, and
-              audit report generation easier to inspect during discovery.
+              The pilot starts with support-agent actions that send customer
+              communications, touch PII, or trigger refund workflows.
             </p>
           </div>
           <div class="code-block tall">
@@ -269,7 +326,9 @@
   "policy_override_applied": false,
   "policy_rule_id": "policy-rule-id-or-none",
   "final_decision": "allow | flag | escalate | block",
-  "reason": "plain-language evidence note"
+  "reason_code": "machine-readable-reason-code",
+  "reason": "plain-language evidence note",
+  "required_evidence": ["field-name"]
 }</code></pre>
           </div>
         </div>
@@ -278,7 +337,7 @@
       <section id="audit-report" class="section-pad section-muted">
         <div class="section-heading">
           <p class="eyebrow">Audit report preview</p>
-          <h2>Synthetic sample report — not production data.</h2>
+          <h2>Synthetic sample report - not production data.</h2>
         </div>
         <div class="report-panel">
           <div class="report-summary">
@@ -309,13 +368,12 @@
           </div>
           <p class="top-policy">
             Top policy triggered:
-            <strong>PII_CUSTOMER_COMMUNICATION_REVIEW</strong>
+            <strong>PII_OUTBOUND_MESSAGE_REQUIRES_REVIEW</strong>
           </p>
           <div class="cta-row compact">
-            <button class="button secondary" type="button" id="copy-report-jsonl">Copy JSONL sample</button>
-            <button class="button primary" type="button" id="toggle-report-preview">View report preview</button>
+            <a class="button primary" href="sample-audit-report.html">View Sample Audit Report</a>
           </div>
-          <div class="report-preview" id="report-preview" hidden>
+          <div class="report-preview" id="report-preview">
             <div class="report-detail-grid">
               <div>
                 <span>Review period</span>
@@ -343,25 +401,26 @@
               </div>
               <div>
                 <span>Top policy triggered</span>
-                <strong>PII_CUSTOMER_COMMUNICATION_REVIEW</strong>
+                <strong>PII_OUTBOUND_MESSAGE_REQUIRES_REVIEW</strong>
               </div>
               <div>
-                <span>Example final decision</span>
-                <strong>block</strong>
+                <span>Sample blocked decision</span>
+                <strong>MISSING_AUDIT_FIELDS_BLOCK</strong>
               </div>
               <div>
-                <span>Example reason code</span>
-                <strong>PAYMENT_ABOVE_THRESHOLD_NO_APPROVAL</strong>
+                <span>Sample escalated decision</span>
+                <strong>PAYMENT_OR_REFUND_ABOVE_THRESHOLD_REQUIRES_APPROVAL</strong>
               </div>
             </div>
             <p>
-              Synthetic review indicates most actions were allowed, while PII
-              communication and payment-adjacent actions created the clearest
-              review burden for compliance and platform teams.
+              Evidence fields required: event_id, timestamp, agent_id,
+              user_role, action_type, tool_called, data_touched,
+              policy_context, human_approved, approval_status, amount_usd,
+              threshold_usd, reviewer_id, and reason_code.
             </p>
             <p>
-              Synthetic sample only. This preview uses generated demo data, not
-              live customer data or production enforcement evidence.
+              Synthetic demo only. Not connected to live customer data. Not
+              production enforcement.
             </p>
           </div>
         </div>
@@ -377,8 +436,8 @@
             <h3>Included</h3>
             <ul class="check-list">
               <li>One integration point</li>
-              <li>One regulated workflow</li>
-              <li>One policy library</li>
+              <li>One regulated customer support workflow</li>
+              <li>Policy Pack v1</li>
               <li>One normalized audit schema</li>
               <li>One audit-ready report</li>
               <li>4-8 week pilot window</li>
@@ -389,9 +448,9 @@
             <ul class="check-list muted-list">
               <li>Broad legal compliance claims</li>
               <li>Full multi-framework enforcement</li>
-              <li>Multi-vertical policy libraries</li>
+              <li>Broad vertical policy libraries</li>
               <li>Self-serve onboarding</li>
-              <li>Production blocking across every agent framework</li>
+              <li>Production enforcement across agent frameworks</li>
             </ul>
           </article>
         </div>
@@ -401,7 +460,7 @@
         <div class="personas">
           <article class="persona-card">
             <p class="eyebrow">Buyer</p>
-            <h2>Compliance Officer / CISO</h2>
+            <h2>Compliance, risk, security, and platform teams</h2>
             <p>Needs:</p>
             <ul>
               <li>Accountability</li>
@@ -412,15 +471,15 @@
             </ul>
           </article>
           <article class="persona-card">
-            <p class="eyebrow">User</p>
-            <h2>Security / Platform Engineer</h2>
+            <p class="eyebrow">Primary ICP</p>
+            <h2>Teams deploying AI agents in regulated customer support</h2>
             <p>Needs:</p>
             <ul>
               <li>Clean schema</li>
               <li>Simple integration path</li>
               <li>JSONL logs</li>
-              <li>Low maintenance burden</li>
-              <li>Clear failure modes</li>
+              <li>Deterministic review rules</li>
+              <li>Clear escalation evidence</li>
             </ul>
           </article>
         </div>
@@ -428,27 +487,33 @@
 
       <section class="section-pad">
         <div class="section-heading">
-          <p class="eyebrow">Discovery focus — vertical not finalized.</p>
-          <h2>Which regulated workflow should be governed first?</h2>
+          <p class="eyebrow">Industry examples</p>
+          <h2>One workflow, with regulated-industry examples.</h2>
+          <p>
+            The primary ICP is compliance, risk, security, and platform teams
+            deploying AI agents in regulated customer support. Healthcare,
+            insurance, and financial services are examples, not separate product
+            tracks.
+          </p>
         </div>
         <div class="vertical-grid">
-          <button class="vertical-card active" type="button" data-vertical-choice="Financial services">
+          <button class="vertical-card active" type="button" data-vertical-choice="Financial services example">
             <strong>Financial services</strong>
-            <span>Risky action: agent recommends account changes.</span>
-            <span>Policy concern: suitability review and approval evidence.</span>
-            <span>Evidence needed: action, data touched, policy match, reviewer state.</span>
+            <span>Example: support agent sends account-status details.</span>
+            <span>Concern: PII and payment-adjacent workflows.</span>
+            <span>Evidence: data touched, approval state, policy decision.</span>
           </button>
-          <button class="vertical-card" type="button" data-vertical-choice="Healthcare operations">
+          <button class="vertical-card" type="button" data-vertical-choice="Healthcare example">
             <strong>Healthcare operations</strong>
-            <span>Risky action: agent drafts patient-facing communication.</span>
-            <span>Policy concern: sensitive data exposure and human review.</span>
-            <span>Evidence needed: data class, approval status, reason for decision.</span>
+            <span>Example: support agent drafts patient-facing communication.</span>
+            <span>Concern: sensitive data in outbound messages.</span>
+            <span>Evidence: data class, reviewer state, reason code.</span>
           </button>
-          <button class="vertical-card" type="button" data-vertical-choice="Insurance claims">
+          <button class="vertical-card" type="button" data-vertical-choice="Insurance example">
             <strong>Insurance claims</strong>
-            <span>Risky action: agent changes claim status or payout routing.</span>
-            <span>Policy concern: authority threshold and exception handling.</span>
-            <span>Evidence needed: workflow step, amount threshold, escalation record.</span>
+            <span>Example: support agent explains claim or refund status.</span>
+            <span>Concern: authority threshold and exception handling.</span>
+            <span>Evidence: workflow step, threshold, escalation record.</span>
           </button>
           <button class="vertical-card" type="button" data-vertical-choice="Regulated customer support">
             <strong>Customer support in regulated industries</strong>
@@ -462,43 +527,52 @@
       <section id="design-partner" class="section-pad cta-section">
         <div class="section-heading">
           <p class="eyebrow">Design partner CTA</p>
-          <h2>Are your AI agents already taking action?</h2>
+          <h2>Pilot regulated customer support governance.</h2>
           <p>
-            If your organization is deploying AI agents that access records,
-            send communications, approve workflows, or trigger system changes,
-            we are looking for 2-3 design partners to validate the first
-            audit-ready governance workflow.
+            For teams deploying AI agents that access customer records, send
+            support communications, or trigger refund/payment-adjacent
+            workflows.
           </p>
         </div>
         <div class="conversion-grid">
           <article class="info-card">
             <h3>What this pilot is designed to validate</h3>
             <ul class="check-list">
-              <li>Which agent actions create the highest audit risk</li>
+              <li>Whether Policy Pack v1 catches the right support-agent actions</li>
               <li>Which evidence fields compliance teams actually need</li>
               <li>Whether JSONL audit records are useful for review</li>
-              <li>Which policy decisions should be deterministic</li>
-              <li>Which regulated workflow should be built first</li>
+              <li>Which decisions should escalate or block before send</li>
+              <li>Whether the sample audit report supports pilot approval</li>
             </ul>
           </article>
           <article class="info-card trust-box">
             <h3>What this demo does not claim</h3>
             <ul class="check-list muted-list">
-              <li>Not legal advice</li>
-              <li>Not a compliance certification</li>
-              <li>Not SOC 2 or HIPAA certified</li>
-              <li>Not connected to live customer data</li>
-              <li>Not a production enforcement system</li>
+              <li>Not legal advice.</li>
+              <li>Not compliance certification.</li>
+              <li>Not SOC 2/HIPAA certified.</li>
+              <li>Synthetic demo only.</li>
+              <li>Not connected to live customer data.</li>
+              <li>Not production enforcement.</li>
               <li>Not a replacement for compliance, legal, or auditor judgment</li>
             </ul>
           </article>
         </div>
         <p class="qualification-note">
           Best fit: teams testing or deploying AI agents that can access
-          records, send communications, approve workflows, or trigger system
-          changes.
+          support records, send customer communications, or trigger refund and
+          payment-adjacent workflows.
         </p>
         <form id="partner-form" class="partner-form">
+          <label class="full-field">
+            Next step
+            <select name="requestType" required>
+              <option value="">Select one</option>
+              <option value="Request design partner review">Request design partner review</option>
+              <option value="Download sample audit report">Download sample audit report</option>
+              <option value="Review policy schema">Review policy schema</option>
+            </select>
+          </label>
           <label>
             Work email
             <input type="email" name="workEmail" autocomplete="email" required>
@@ -512,7 +586,7 @@
             <input type="text" name="role" autocomplete="organization-title" required>
           </label>
           <label>
-            Regulated industry
+            Regulated industry example
             <input type="text" name="regulatedIndustry" required>
           </label>
           <label>
@@ -525,51 +599,53 @@
             </select>
           </label>
           <label>
-            Which workflow is most relevant?
+            Workflow
             <select name="relevantWorkflow" required>
-              <option value="">Select one</option>
-              <option value="Financial services">Financial services</option>
-              <option value="Healthcare operations">Healthcare operations</option>
-              <option value="Insurance claims">Insurance claims</option>
               <option value="Regulated customer support">Regulated customer support</option>
-              <option value="Other / exploring">Other / exploring</option>
             </select>
           </label>
           <label class="full-field">
             What is the riskiest action your agents can take?
             <textarea name="riskiestAction" rows="4" required></textarea>
           </label>
-          <button class="button primary full-field" type="submit">Request Design Partner Call</button>
-          <p class="form-success full-field" id="form-success" role="status" hidden>
-            Request captured locally for demo. Connect this form to CRM/email before launch.
+          <p class="form-note full-field">
+            Backend lead capture is not configured on this static pilot page.
+            Submit to generate a prefilled email as the clear next step, or
+            email hello@agentcomply.ai directly.
           </p>
+          <button class="button primary full-field" type="submit">Prepare Email Follow-Up</button>
+          <p class="form-success full-field" id="form-success" role="status" hidden>
+            Backend lead capture is not configured. Use the email link below to send this request.
+          </p>
+          <a class="button secondary full-field" id="mailto-fallback" href="mailto:hello@agentcomply.ai?subject=AgentComply%20AI%20pilot%20request" hidden>Email AgentComply AI</a>
         </form>
       </section>
     </main>
 
     <footer class="site-footer">
       <p>
-        Pre-validation pilot concept. Synthetic demo only. AgentComply AI does
-        not provide legal advice or certify regulatory compliance.
+        Not legal advice. Not compliance certification. Not SOC 2/HIPAA
+        certified. Synthetic demo only. Not connected to live customer data.
+        Not production enforcement.
       </p>
-      <a href="design-partner.html">Design Partner Packet</a>
+      <a href="sample-audit-report.html">View Sample Audit Report</a>
     </footer>
 
     <aside class="sticky-cta" id="sticky-cta" aria-label="Design partner access">
-      <p>Validating AI-agent audit evidence with 2-3 design partners.</p>
+      <p>Validating regulated customer support audit evidence with 2-3 design partners.</p>
       <div>
         <a
           class="button primary"
           href="#design-partner"
           data-track-event="hero_cta_click"
           data-cta-location="sticky_request"
-        >Request Access</a>
+        >Request Review</a>
         <a
           class="button secondary"
           href="#demo"
           data-track-event="demo_cta_click"
           data-cta-location="sticky_demo"
-        >Test Demo</a>
+        >Build Scenario</a>
       </div>
       <button class="sticky-cta-close" id="sticky-cta-close" type="button" aria-label="Dismiss sticky CTA">x</button>
     </aside>
