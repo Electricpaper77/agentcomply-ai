@@ -1,145 +1,72 @@
 # AgentComply AI
 
-AgentComply AI is an audit evidence layer for autonomous AI-agent actions in regulated workflows. This single-page validation site presents the concept, a synthetic risk-engine demo, pilot scope, buyer/user concerns, and a local-only design partner form.
+AgentComply AI is a buyer-facing synthetic audit evidence demo for regulated customer-support AI agents.
 
-## Demo Scope
+Live demo: https://agentcomply-ai.vercel.app
 
-This is a front-end-only validation website. It includes:
+## Summary
 
-- Static landing page content in `index.html`
-- Styling in `styles.css`
-- Synthetic scenario rendering, risk scoring, policy overrides, copy buttons, report preview toggle, vertical selection, and local form handling in `app.js`
-- No backend, no deployment configuration, and no live customer data
+The demo shows how AI-agent actions can be converted into audit-ready evidence before they become compliance review problems. It focuses on regulated customer-support workflows where agents send customer messages, access account data, touch PII, or trigger refund/payment-adjacent actions.
 
-## Synthetic Data Disclaimer
+## Key Features
 
-All scenario events, audit logs, report numbers, and workflow examples are synthetic. The demo does not use customer data, production logs, regulated records, or real deployment evidence.
+- Policy Pack v1 for regulated customer support
+- Four deterministic policy rules for PII, refund/payment thresholds, missing audit fields, and unauthorized tool/prompt-injection risk
+- Interactive scenario builder with allow, escalate, and block outcomes
+- Copyable JSONL audit records
+- Static sample audit report page
+- Demo-only lead capture with a clear mailto fallback
+- Visible trust boundaries and compliance disclaimers
 
-AgentComply AI does not provide legal advice, certify regulatory compliance, or claim regulatory approval.
+## Screenshots
 
-## Algorithm Explanation
+Screenshots can be added here:
 
-The interactive demo calculates an agent-action risk score from five inputs:
+- Homepage / Policy Pack v1
+- Scenario builder with JSONL audit record
+- Sample audit report page
 
-- `action_criticality`
-- `data_sensitivity`
-- `policy_violation_severity`
-- `approval_gap`
-- `audit_completeness_gap`
+## QA Proof
 
-The score is rounded to the nearest integer.
+- Scenario buttons verified:
+  - CRM lookup: `allow`
+  - PII outbound email: `escalate`
+  - refund/payment threshold: `escalate`
+  - missing audit fields: `block`
+- JSONL copy works and copied JSON parses correctly
+- Production homepage returns `200`
+- Production sample audit report returns `200`
+- Browser console errors: none
+- Mobile horizontal overflow: none
+- No false backend, legal advice, compliance certification, SOC 2, HIPAA, production enforcement, or live customer data claims
 
-```text
-risk_score =
-  (action_criticality * 0.22) +
-  (data_sensitivity * 0.24) +
-  (policy_violation_severity * 0.26) +
-  (approval_gap * 0.16) +
-  (audit_completeness_gap * 0.12)
-```
+## Known Limitations
 
-## Risk Engine v0
+- No real backend, CRM, or email lead capture is implemented
+- Audit data is static synthetic demo data
+- Not legal advice
+- Not compliance certification
+- Not connected to live customer data
+- Not production enforcement
 
-The interactive demo uses a two-layer decision model:
+## Target Roles And Keywords
 
-1. Weighted scoring estimates risk severity.
-2. Hard policy overrides apply deterministic decisions when a regulated action meets a specific rule.
+Target roles:
 
-The weighted score still uses the formula above and the score-based fallback thresholds:
+- AI governance
+- Compliance
+- Risk
+- Security
+- Platform engineering
+- Customer support operations
 
-- `0-29`: allow
-- `30-59`: flag
-- `60-79`: escalate
-- `80-100`: block
+Keywords:
 
-If a hard policy rule matches, the final decision uses the override. If no hard policy rule matches, the final decision uses the score-based decision.
-
-Scenario C calculates to a weighted score of `73`, so its score-based decision is `escalate`. It becomes `block` because the `PAYMENT_ABOVE_THRESHOLD_NO_APPROVAL` hard policy rule applies: the action is payment/refund-related, action criticality is at least `85`, policy violation severity is at least `80`, and the approval gap is at least `70`.
-
-The JSONL evidence records include:
-
-- `risk_score`
-- `score_based_decision`
-- `policy_override_applied`
-- `policy_rule_id`
-- `final_decision`
-- `reason`
-
-This remains a synthetic demo only. It does not use live customer data, provide legal advice, certify regulatory compliance, or claim production readiness.
-
-## Design-Partner Conversion Layer
-
-The site includes a lightweight conversion layer for discovery calls without expanding product scope:
-
-- A 30-second buyer path that links buyers from risk framing to the demo, JSONL evidence, and design-partner form
-- A local-only design partner form with no backend submission
-- A required workflow-fit dropdown to help qualify discovery conversations
-- Safe console-only event logging through `trackEvent(eventName, payload = {})`
-- No external analytics service, cookies, tracking pixels, or personal data logging
-- Event payloads limited to non-personal fields such as scenario, decision, policy rule, vertical choice, and CTA location
-- A synthetic-only audit report preview using generated demo data
-
-The form intentionally does not log work email, company, role, regulated industry, or free-text risk answers.
-
-## Design Partner Packet
-
-`design-partner.html` is a compact design-partner packet for outreach and discovery calls.
-
-It is intended for compliance leaders, risk leaders, CISOs, security/platform engineers, and AI governance teams evaluating one regulated AI-agent workflow. The page summarizes best-fit pilot workflows, pilot scope, design-partner inputs, expected outputs, success criteria, and the boundaries of the demo.
-
-The packet keeps the same no-backend and no-claim safety posture as the homepage:
-
-- No authentication, pricing, or backend submission
-- No live customer data by default
-- No legal advice or compliance certification claims
-- No SOC 2, HIPAA, production-readiness, customer, revenue, or partnership claims
-
-The packet supports outreach by giving prospective design partners a concise explanation of what a 4-8 week validation could test before they use the homepage form to request a design partner call.
-
-## How To Run Locally
-
-Open `index.html` directly in a browser, or serve the folder with a local static server:
-
-```bash
-python -m http.server 8000
-```
-
-Then visit:
-
-```text
-http://localhost:8000
-```
-
-## Local Validation Checklist
-
-Before commit or preview deployment, confirm:
-
-- Scenario A final decision is `allow`
-- Scenario B final decision is `escalate`
-- Scenario C has `risk_score` `73`, score-based decision `escalate`, policy rule `PAYMENT_ABOVE_THRESHOLD_NO_APPROVAL`, and final decision `block`
-- Scenario D final decision is `flag`
-- JSON output parses successfully and includes the Risk Engine v0 fields listed above
-- Public copy does not claim customers, revenue, certification, compliance approval, production deployment, legal advice, or guarantees
-
-## What Not To Claim Publicly Yet
-
-Do not claim:
-
-- Customers
-- Revenue
-- SOC 2 certification
-- HIPAA compliance
-- Legal compliance
-- Production deployments
-- Partnerships
-- Regulatory approval
-- Live customer data
-- Unsupported market-size claims
-
-## Suggested Next Validation Steps
-
-1. Build 15-20 named contact list
-2. Run structured discovery calls
-3. Confirm 3+ repeated pain signals
-4. Choose one vertical
-5. Secure 2-3 design partners
+- AI agent governance
+- AI audit evidence
+- regulated customer support
+- PII review
+- refund approval workflows
+- policy enforcement
+- JSONL audit logs
+- compliance automation
